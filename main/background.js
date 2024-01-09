@@ -274,6 +274,7 @@ function spawnSilentInstall(id, info) {
     const appImageRegex = /appimage/i;
     if (exeRegex.test(info.filePath)) {
         exec(`${info.filePath}`, function(err, data) {
+            console.log('安装包错 err：', err,data);
             if (err) return;
             sendInstallInfo(id, info)
         });

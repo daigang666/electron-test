@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
 import { mapMutations, mapState } from "vuex";
 export default {
   data() {
@@ -57,9 +58,19 @@ export default {
     ...mapState(["showDownloadWidget"]),
   },
   methods: {
-    ...mapMutations(["searchApp", "toggleDownloadWidget"]),
+    ...mapMutations(["searchApp", "toggleDownloadWidget","addToDownloads"]),
     goBack() {
-      this.$router.back();
+      const newDownload = {
+        id: Date(),
+        url: 'http://localhost:3000/download',
+        name: 'file.name',
+        percent: 0,
+        fileSize: "0mb",
+        state: "Starting",
+      };
+      this.addToDownloads(newDownload);
+      ipcRenderer.send("downloadFile", newDownload);
+      // this.$router.back();
     },
   },
   mounted() {
